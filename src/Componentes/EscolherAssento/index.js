@@ -5,8 +5,9 @@ import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 
 import "./styles.css"
+import Footer from "../Footer"
 
-export default function EscolherAssento({nome, setNome, setMovieName, setSection, setDate}){
+export default function EscolherAssento({nome, setNome}){
 
     return(
         <div className="escolherAssento">
@@ -15,7 +16,7 @@ export default function EscolherAssento({nome, setNome, setMovieName, setSection
             <Description />
             <PersonalData setNome={setNome} nome={nome} />
             <Button />
-            <Footer setMovieName={setMovieName} setSection={setSection} setDate={setDate} />
+            <Footer />
         </div>
     )
 }
@@ -109,39 +110,5 @@ function Button(){
                 <button>Reservar assento(s)</button>
             </div>
         </Link>
-    )
-}
-
-function Footer({setMovieName, setSection, setDate}) {
-    const {id} = useParams()
-    const [movie, setMovie] = useState()
-    const [day, setDay] =useState()
-    const [hour, setHour] = useState()
-
-    useEffect(() => {
-        const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${id}/seats`)
-
-        promise.then(response => {
-            setMovie(response.data.movie)
-            setDay(response.data.day)
-            setHour(response.data.name)
-            setMovieName(response.data.movie.title)
-            setSection(response.data.name)
-            setDate(response.data.day.date)
-        })
-
-    },[])
-
-    return(
-        movie ?     
-        <div className="footer">
-            <div className="imagem">
-                <img src={movie.posterURL} />
-            </div>
-            <div className="informacoes">
-                <div>{movie.title}</div>
-                <div>{day.weekday} - {hour}</div> 
-            </div>
-        </div> : <></>
     )
 }
